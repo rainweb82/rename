@@ -104,13 +104,13 @@ do
 		nowmsg=\&title=$surl%E7%9B%91%E6%8E%A7%E6%97%A5%E6%8A%A5\&content=%E7%9B%91%E6%8E%A7%E5%9F%9F%E5%90%8D%EF%BC%9A$surl%3Cbr+%2F%3E%E7%B4%AF%E8%AE%A1%E7%9B%91%E6%8E%A7%EF%BC%9A$(($zcnum+$cwnum))%E6%AC%A1+%E3%80%90%E6%AD%A3%E5%B8%B8%EF%BC%9A$zcnum%E6%AC%A1%EF%BC%8C%E9%94%99%E8%AF%AF%EF%BC%9A$cwnum%E6%AC%A1%E3%80%91%3Cbr+%2F%3E%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4%EF%BC%9A$day%E5%A4%A9$hour%E5%B0%8F%E6%97%B6$min%E5%88%86$sec%E7%A7%92%3Cbr+%2F%3E`date +"%m-%d_%H:%M:%S"`%3Cbr%3E$wrong\&template=html
 		if [ ! $pushplustokena ]
 		then
-			echo 未设置PUSHPLUS-A，跳过本次每日推送任务
+			echo -e "\033[34m"未设置PUSHPLUS-A，跳过本次每日推送任务
 		else
 			sendmsg $pushplustokena $nowmsg
 		fi
 		if [ ! $pushplustokenb ]
 		then
-			echo 未设置PUSHPLUS-B，跳过本次每日推送任务
+			echo -e "\033[34m"未设置PUSHPLUS-B，跳过本次每日推送任务
 		else
 			nsendmsg $pushplustokenb $nowmsg
 		fi
@@ -167,13 +167,13 @@ do
 			nowmsg=\&title=$surl%E7%BD%91%E7%AB%99%E6%8C%82%E4%BA%86\&content=$surl+%E5%9F%9F%E5%90%8D%E6%8C%82%E4%BA%86%EF%BC%8C%E5%BF%AB%E5%8E%BB%E7%9C%8B%E7%9C%8B%E5%90%A7%EF%BC%81+`date +"%m-%d_%H:%M:%S"`\&template=html
 			if [ ! $pushplustokena ]
 			then
-				echo 未设置PUSHPLUS-A，跳过本次错误推送任务
+				echo -e "\033[34m"未设置PUSHPLUS-A，跳过本次错误推送任务
 			else
 				sendmsg $pushplustokena $nowmsg
 			fi
 			if [ ! $pushplustokenb ]
 			then
-				echo 未设置PUSHPLUS-B，跳过本次错误推送任务
+				echo -e "\033[34m"未设置PUSHPLUS-B，跳过本次错误推送任务
 			else
 				sendmsg $pushplustokenb $nowmsg
 			fi
@@ -190,7 +190,7 @@ do
 		lxcwhj=0
 		for ((r=1;$r<=$maxurl;r+=1))
 		do
-			echo 错误次数超过上限，等待更新域名 $date
+			echo -e "\033[31m"错误次数超过上限，等待更新域名 $date
 			rm -rf watchdog
 			git clone --depth 1 $hub watchdog
 			new_url=`cat ./watchdog/url.list`
@@ -210,7 +210,7 @@ do
 			echo -e "\033[35m"域名未更新，等待30分钟 $date
 			loading 30
 		done
-		echo 已尝试更新域名，恢复域名检测 $date
+		echo -e "\033[37m"重新开始域名检测 $date
 	fi
 done
 #代码结束
