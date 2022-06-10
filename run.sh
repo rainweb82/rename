@@ -1,3 +1,4 @@
+#!/bin/bash
 source ./config
 rm -rf watchdog
 git clone --depth 1 $hub watchdog
