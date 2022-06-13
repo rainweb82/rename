@@ -75,17 +75,17 @@ do
 	if [ $baidu -ne 200 ] && [ $baidu -ne 301 ]
 	then
 		baidu=31m失败
-		printf "当前网络异常，访问百度:\033[$baidu\033[37m，60秒后重试    \n"
+		printf "网络异常，访问百度:\033[$baidu\033[37m，60秒后重试    \n"
 		loading 1
 	else
 		baidu=32m正常
-		printf "当前网络正常，访问百度:\033[$baidu\033[37m，即将开始域名检测\n"
+		printf "网络正常，访问百度:\033[$baidu\033[37m，即将开始域名检测\n"
         ipp
-        echo -e "\033[37m"当前网络位置：$ipp
+        echo -e "\033[37m"网络位置：$ipp
 		break
 	fi
 done
-echo -e "\033[35m"当前监控域名:$url
+echo -e "\033[35m"监控域名:$url
 #开始循环
 while [[ $tries -lt 5 ]]
 do
