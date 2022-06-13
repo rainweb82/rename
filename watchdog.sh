@@ -42,6 +42,11 @@ url_h="${1//www./}"&&url_h="${url_h//https:\/\//}"&&url_h="${url_h//http:\/\//}"
 url_s=$((${#url_h}/2-1))
 surl=${url_h:0:url_s}**${url_h:$((${#url_h}-${url_s}))}
 }
+#urlEncode编码
+function urlEncode() {
+    result=$(python -c "import urllib, sys; print urllib.quote(sys.argv[1])" "$1")
+    echo $result
+}
 #Pushplus推送
 function sendmsg()
 {
@@ -55,6 +60,7 @@ function ipp
 strA="`curl --retry 3 --retry-max-time 30 -L -s https://www.ip38.com/`"
 result=$(echo "$strA" | egrep -o "(<font color=#FF0000>)(.*)(font>)")
 ipp="`echo ${result:20:$((${#result}-27))}`"
+uipp=urlEncode $ipp
 }
 #检测代码开始
 zcnum=0
