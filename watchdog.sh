@@ -30,7 +30,7 @@ function loading()
 			sleep 0.25
 		fi
 		ratio_s=$(($ratio/4))
-		printf " \033[37m等待:[%-30s]%d秒[%c]   \r" "$markl" "$ratio_s" "${ch[$(($ratio%4))]}"
+		printf " \033[39m等待:[%-30s]%d秒[%c]   \r" "$markl" "$ratio_s" "${ch[$(($ratio%4))]}"
 		markl=${mark:0:$((${#mark}/($1*60/30*4)+1))}
 		mark="#$mark"
 	done
@@ -75,13 +75,13 @@ do
 	if [ $baidu -ne 200 ] && [ $baidu -ne 301 ]
 	then
 		baidu=31m失败
-		printf "\033[37m网络异常，访问百度:\033[$baidu\033[37m，60秒后重试    \n"
+		printf "\033[39m网络异常，访问百度:\033[$baidu\033[39m，60秒后重试    \n"
 		loading 1
 	else
 		baidu=32m正常
-		printf "\033[37m网络正常，访问百度:\033[$baidu\033[37m，即将开始域名检测\n"
+		printf "\033[39m网络正常，访问百度:\033[$baidu\033[39m，即将开始域名检测\n"
         ipp
-        echo -e "\033[37m"网络位置：$ipp
+        echo -e "\033[39m"网络位置：$ipp
 		break
 	fi
 done
@@ -219,7 +219,7 @@ do
 			echo -e "\033[35m"域名未更新，等待30分钟 $date
 			loading 30
 		done
-		echo -e "\033[37m"重新开始域名检测 $date
+		echo -e "\033[39m"重新开始域名检测 $date
 	fi
 done
 #代码结束
