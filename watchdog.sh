@@ -50,7 +50,7 @@ nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $
 echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode          
 }
 #获取本机ip归属地信息
-ipp
+function ipp
 {
 strA="`curl --retry 3 --retry-max-time 30 -L -s https://www.ip38.com/`"
 result=$(echo "$strA" | egrep -o "(<font color=#FF0000>)(.*)(font>)")
