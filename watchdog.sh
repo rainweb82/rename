@@ -80,7 +80,7 @@ do
 	else
 		baidu=32m正常
 		printf "当前网络正常，访问百度:\033[$baidu\033[37m，即将开始域名检测\n"
-        ipp()
+        ipp
         echo 当前网络位置：$ipp
 		break
 	fi
