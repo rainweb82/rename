@@ -185,7 +185,7 @@ do
 		#判断是否需要推送
 		if [ $(( $times % $msgtimes )) = 0 ]  && [ $times -ne 0 ] ; then
 			#推送消息
-			nowmsg=\&title=$surl%E7%BD%91%E7%AB%99%E6%8C%82%E4%BA%86\&content=$surl+%E5%9F%9F%E5%90%8D%E6%8C%82%E4%BA%86%EF%BC%8C%E5%BF%AB%E5%8E%BB%E7%9C%8B%E7%9C%8B%E5%90%A7%EF%BC%81+`date +"%m-%d_%H:%M:%S"`%3Cbr%3E$uipp\&template=html
+			nowmsg=\&title=$surl%E7%BD%91%E7%AB%99%E6%8C%82%E4%BA%86\&content=$surl+%E5%9F%9F%E5%90%8D%E6%8C%82%E4%BA%86%EF%BC%8C%E5%BF%AB%E5%8E%BB%E7%9C%8B%E7%9C%8B+`date +"%m-%d_%H:%M:%S"`%3Cbr%3E$uipp\&template=html
 			if [ ! $pushplustokena ]
 			then
 				echo -e "\033[34m"未设置PUSHPLUS-A，跳过本次错误推送任务
