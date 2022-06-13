@@ -47,7 +47,7 @@ function sendmsg()
 {
 nowmsg=http://www.pushplus.plus/send?token=$1$2
 nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $nowmsg`
-echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode
+echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode          
 }
 #检测代码开始
 zcnum=0
