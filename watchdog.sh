@@ -49,6 +49,13 @@ nowmsg=http://www.pushplus.plus/send?token=$1$2
 nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $nowmsg`
 echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode          
 }
+#获取本机ip归属地信息
+ipp
+{
+strA="`curl --retry 3 --retry-max-time 30 -L -s https://www.ip38.com/`"
+result=$(echo "$strA" | egrep -o "(<font color=#FF0000>)(.*)(font>)")
+ipp="`echo ${result:20:$((${#result}-27))}`"
+}
 #检测代码开始
 zcnum=0
 cwnum=0
@@ -73,6 +80,8 @@ do
 	else
 		baidu=32m正常
 		printf "当前网络正常，访问百度:\033[$baidu\033[37m，即将开始域名检测\n"
+        ipp()
+        echo 当前网络位置：$ipp
 		break
 	fi
 done
