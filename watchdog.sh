@@ -117,7 +117,7 @@ do
 		issend=0
 		#定时检查域名是否有更新
 		rm -rf watchdog
-		git clone --depth 1 $hub watchdog
+		git clone --depth 1 $hub watchdog --quiet
 		new_url=`cat ./watchdog/url.list`
 		if [ $url != $new_url ]
 		then
@@ -192,7 +192,7 @@ do
 		do
 			echo -e "\033[31m"错误次数超过上限，等待更新域名 $date
 			rm -rf watchdog
-			git clone --depth 1 $hub watchdog
+			git clone --depth 1 $hub watchdog --quiet
 			new_url=`cat ./watchdog/url.list`
 			if [ $url != $new_url ]
 			then
