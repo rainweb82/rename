@@ -60,7 +60,7 @@ function ipp
 strA="`curl --retry 3 --retry-max-time 30 -L -s https://www.ip38.com/`"
 result=$(echo "$strA" | egrep -o "(<font color=#FF0000>)(.*)(font>)")
 ipp="`echo ${result:20:$((${#result}-27))}`"
-uipp=urlEncode $ipp
+uipp="`urlEncode $ipp`"
 }
 #检测代码开始
 zcnum=0
