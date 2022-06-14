@@ -35,6 +35,7 @@ function loading()
 		markl=${mark:0:$((${#mark}/($1*60/30*4)+1))}
 		mark="#$mark"
 	done
+    printf "%-50s\r"
 }
 #生成简化url
 function jjurl()
