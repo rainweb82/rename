@@ -17,11 +17,11 @@
 url=`cat ./watchdog/url.list`
 #读取配置文件
 source ./config
-
 clear
 #等待进度条
 function loading()
 {
+	ch=('|' '\' '-' '/')
 	mark=''
 	markl=''
 	for ((ratio=$(($1*60*4));$ratio>=0;ratio+=-1))
@@ -31,11 +31,11 @@ function loading()
 			sleep 0.25
 		fi
 		ratio_s=$(($ratio/4))
-		printf " \033[39m等待:[%-30s]%d秒[%c]   \r" "$markl" "$ratio_s" "${ch[$(($ratio%4))]}"
+		printf " \033[39m等待:[%-30s]%d秒[%c]    \r" "$markl" "$ratio_s" "${ch[$(($ratio%4))]}"
 		markl=${mark:0:$((${#mark}/($1*60/30*4)+1))}
 		mark="#$mark"
 	done
-    printf "%-50s\r"
+	printf "%-50s\r"
 }
 #生成简化url
 function jjurl()
@@ -46,21 +46,21 @@ surl=${url_h:0:url_s}**${url_h:$((${#url_h}-${url_s}))}
 }
 #urlEncode编码
 function urlEncode() {
-    local length="${#1}"
-    for (( i = 0; i < length; i++ )); do
-        local c="${1:i:1}"
-        case $c in
-            [a-zA-Z0-9.~_-]) printf "$c" ;;
-            *) printf "$c" | xxd -p -c1 | while read x;do printf "%%%s" "$x";done
-        esac
-    done
+	local length="${#1}"
+	for (( i = 0; i < length; i++ )); do
+		local c="${1:i:1}"
+		case $c in
+			[a-zA-Z0-9.~_-]) printf "$c" ;;
+			*) printf "$c" | xxd -p -c1 | while read x;do printf "%%%s" "$x";done
+		esac
+	done
 }
 #Pushplus推送
 function sendmsg()
 {
 nowmsg=http://www.pushplus.plus/send?token=$1$2
 nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $nowmsg`
-echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode          
+echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode
 }
 #获取本机ip归属地信息
 function ipp
@@ -78,7 +78,6 @@ lxcwhj=0
 issend=0
 wrong=''
 tstart=`date '+%s'`
-ch=('|' '\' '-' '/')
 #推送容错时间计算
 times=$(($msgtimes-$err))
 temptimes=$times
@@ -90,13 +89,13 @@ do
 	if [ $baidu -ne 200 ] && [ $baidu -ne 301 ]
 	then
 		baidu=31m失败
-		printf "\033[39m网络异常，访问百度:\033[$baidu\033[39m，60秒后重试    \n"
+		printf "\033[39m网络异常，访问百度:\033[$baidu\033[39m，60秒后重试\n"
 		loading 1
 	else
 		baidu=32m正常
 		printf "\033[39m网络正常，访问百度:\033[$baidu\033[39m，即将开始域名检测\n"
-        ipp
-        echo -e "\033[39m"网络位置：$ipp
+		ipp
+		echo -e "\033[39m"网络位置：$ipp
 		break
 	fi
 done
@@ -186,7 +185,7 @@ do
 		#打印错误文字
 		echo -e "\033[31m"网站异常,内容无指定文字 代码:$code $date
 		#判断是否需要推送
-		if [ $(( $times % $msgtimes )) = 0 ]  && [ $times -ne 0 ] ; then
+		if [ $(( $times % $msgtimes )) = 0 ] && [ $times -ne 0 ] ; then
 			#推送消息
 			nowmsg=\&title=$surl%E7%BD%91%E7%AB%99%E6%8C%82%E4%BA%86\&content=$surl+%E5%9F%9F%E5%90%8D%E6%8C%82%E4%BA%86%EF%BC%8C%E5%BF%AB%E5%8E%BB%E7%9C%8B%E7%9C%8B%3Cbr+%2F%3E%E7%BD%91%E7%BB%9C%E5%BD%92%E5%B1%9E%EF%BC%9A$uipp%3Cbr+%2F%3E`date +"%m-%d_%H:%M:%S"`$autograph\&template=html
 			if [ ! $pushplustokena ]
