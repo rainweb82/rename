@@ -13,13 +13,17 @@ Aidlux：https://www.aidlux.com/product<br />
 termax：https://github.com/termux/termux-app/releases<br />
 electerm：https://github.com/electerm/electerm/releases
 
+#### Aidlux同步系统时间命令
+
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 #### termax需安装功能支持
 
 pkg install git && pkg install vim -y
 
 #### 首次下载最新脚本
 
-git clone --depth 1 https://gitee.com/iamruirui/watchurl.git watchdog && cp ./watchdog/run.sh run.sh && cp ./watchdog/config config
+git clone --depth 1 https://iamruirui:qweasd123@gitee.com/iamruirui/watchdog.git watchdog && cp ./watchdog/run.sh run.sh && cp ./watchdog/config config
 
 #### 运行程序
 
