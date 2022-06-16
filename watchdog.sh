@@ -72,7 +72,7 @@ uipp="`urlEncode $ipp`"
 }
 autograph="%3Cbr+%2F%3E%3Cbr+%2F%3E%E6%9C%AC%E9%80%9A%E7%9F%A5+By%EF%BC%9Agithub.com%2Frainweb82%2Fwatchdog"
 #检测代码开始
-#如填写了rulhub，则使用此地址的url进行检测
+#如填写了urlhub，则使用此地址的url进行检测
 if [[ $urlhub != "" ]]
 then
 	url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
