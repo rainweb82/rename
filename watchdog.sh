@@ -194,7 +194,7 @@ do
 		#记录错误日志，以备每日推送时使用
 		wrong="%3Cbr+%2F%3E%E4%BB%A3%E7%A0%81%EF%BC%9A$code+%E6%97%B6%E9%97%B4%EF%BC%9A`date +"%m-%d_%H:%M:%S"`$wrong"
 		#打印错误文字
-		echo -e "\033[31m"网站异常,内容无指定文字 代码:$code $date
+		echo -e "\033[31m"网站异常,内容无:$rtit 代码:$code $date
 		#判断是否需要推送
 		if [ $(( $times % $msgtimes )) = 0 ] && [ $times -ne 0 ] ; then
 			#推送消息
