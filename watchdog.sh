@@ -72,6 +72,11 @@ uipp="`urlEncode $ipp`"
 }
 autograph="%3Cbr+%2F%3E%3Cbr+%2F%3E%E6%9C%AC%E9%80%9A%E7%9F%A5+By%EF%BC%9Agithub.com%2Frainweb82%2Fwatchdog"
 #检测代码开始
+#如填写了rulhub，则使用此地址的url进行检测
+if [[ $urlhub != "" ]]
+then
+	url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
+fi
 zcnum=0
 cwnum=0
 lxcwhj=0
@@ -139,9 +144,15 @@ do
 		fi
 		issend=0
 		#定时检查域名是否有更新
-		rm -rf watchdog
-		git clone --depth 1 $hub watchdog --quiet
-		new_url=`cat ./watchdog/url.list`
+
+		if [[ $urlhub != "" ]]
+		then
+			new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
+		else
+			rm -rf watchdog
+			git clone --depth 1 $hub watchdog --quiet
+			new_url=`cat ./watchdog/url.list`
+		fi
 		if [ $url != $new_url ]
 		then
 			url=$new_url
@@ -214,9 +225,14 @@ do
 		for ((r=1;$r<=$maxurl;r+=1))
 		do
 			echo -e "\033[31m"错误次数超过上限，等待更新域名 $date
-			rm -rf watchdog
-			git clone --depth 1 $hub watchdog --quiet
-			new_url=`cat ./watchdog/url.list`
+			if [[ $urlhub != "" ]]
+			then
+				new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
+			else
+				rm -rf watchdog
+				git clone --depth 1 $hub watchdog --quiet
+				new_url=`cat ./watchdog/url.list`
+			fi
 			if [ $url != $new_url ]
 			then
 				url=$new_url
