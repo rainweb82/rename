@@ -12,12 +12,10 @@
 #v9.1 每日推送增加历史错误日志内容
 #v9.2 增加当前网络归属地的显示
 
-
 #读取需监控的域名
 url=`cat ./watchdog/url.list`
 #读取配置文件
 source ./config
-
 
 #等待进度条
 function loading()
@@ -84,7 +82,6 @@ else
 fi
 }
 
-
 #检测代码开始
 clear
 zcnum=0
@@ -124,6 +121,11 @@ echo -e "\033[35m"监控域名:$url
 #开始循环
 while [[ $tries -lt 5 ]]
 do
+	if [[ $url == "stop" ]]
+	then
+		echo -e "\033[31m"接受到停止指令，停止本次域名监控！"\033[30m"
+		break
+	fi
 	#每日推送
 	nowtime=$(($(date +%-H)%12))
 	if [ $nowtime -ne $daypost ]
