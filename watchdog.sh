@@ -1,6 +1,5 @@
 #!/bin/bash
 #Watchdog 直接复制到shell内运行
-
 #v1 实现基本监控
 #v2 增加可配置参数
 #v3 增加错误推送功能
@@ -13,12 +12,13 @@
 #v9.1 每日推送增加历史错误日志内容
 #v9.2 增加当前网络归属地的显示
 
+
 #读取需监控的域名
 url=`cat ./watchdog/url.list`
 #读取配置文件
 source ./config
 
-clear
+
 #等待进度条
 function loading()
 {
@@ -83,19 +83,22 @@ else
 	new_url=`cat ./watchdog/url.list`
 fi
 }
-autograph="%3Cbr+%2F%3E%3Cbr+%2F%3E%E6%9C%AC%E9%80%9A%E7%9F%A5+By%EF%BC%9Agithub.com%2Frainweb82%2Fwatchdog"
+
+
 #检测代码开始
-#如填写了urlhub，则使用此地址的url进行检测
-if [[ $urlhub != "" ]]
-then
-	url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
-fi
+clear
 zcnum=0
 cwnum=0
 lxcwhj=0
 issend=0
 wrong=''
 tstart=`date '+%s'`
+autograph="%3Cbr+%2F%3E%3Cbr+%2F%3E%E6%9C%AC%E9%80%9A%E7%9F%A5+By%EF%BC%9Agithub.com%2Frainweb82%2Fwatchdog"
+#如填写了urlhub，则使用此地址的url进行检测
+if [[ $urlhub != "" ]]
+then
+	url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
+fi
 #推送容错时间计算
 times=$(($msgtimes-$err))
 temptimes=$times
