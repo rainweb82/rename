@@ -17,6 +17,7 @@
 url=`cat ./watchdog/url.list`
 #读取配置文件
 source ./config
+
 clear
 #等待进度条
 function loading()
@@ -69,6 +70,18 @@ strA="`curl --retry 3 --retry-max-time 30 -L -s ip38.com`"
 result=$(echo "$strA" | egrep -o "(<font color=#FF0000>)(.*)(font>)")
 ipp="`echo ${result:20:$((${#result}-27))}`"
 uipp="`urlEncode $ipp`"
+}
+#更新检测url
+function updateurl
+{
+if [[ $urlhub != "" ]]
+then
+	new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
+else
+	rm -rf watchdog
+	git clone --depth 1 $hub watchdog --quiet
+	new_url=`cat ./watchdog/url.list`
+fi
 }
 autograph="%3Cbr+%2F%3E%3Cbr+%2F%3E%E6%9C%AC%E9%80%9A%E7%9F%A5+By%EF%BC%9Agithub.com%2Frainweb82%2Fwatchdog"
 #检测代码开始
@@ -144,14 +157,7 @@ do
 		fi
 		issend=0
 		#定时检查域名是否有更新
-		if [[ $urlhub != "" ]]
-		then
-			new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
-		else
-			rm -rf watchdog
-			git clone --depth 1 $hub watchdog --quiet
-			new_url=`cat ./watchdog/url.list`
-		fi
+		updateurl
 		if [ $url != $new_url ]
 		then
 			url=$new_url
@@ -160,9 +166,9 @@ do
 			zcnum=0
 			wrong=''
 			jjurl $url
-			echo -e "\033[35m"更新域名为:$url
+			echo -e "\033[33m"更新域名为:$url
 		else
-			echo -e "\033[35m"域名无变化，继续监控:$url
+			echo -e "\033[33m"域名无变化，继续监控:$url
 		fi
 		#更新运行文件
 		cp ./watchdog/run.sh run.sh
@@ -224,14 +230,7 @@ do
 		for ((r=1;$r<=$maxurl;r+=1))
 		do
 			echo -e "\033[31m"错误次数超过上限，等待更新域名 $date
-			if [[ $urlhub != "" ]]
-			then
-				new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
-			else
-				rm -rf watchdog
-				git clone --depth 1 $hub watchdog --quiet
-				new_url=`cat ./watchdog/url.list`
-			fi
+			updateurl
 			if [ $url != $new_url ]
 			then
 				url=$new_url
@@ -240,10 +239,10 @@ do
 				zcnum=0
 				wrong=''
 				jjurl $url
-				echo -e "\033[35m"更新域名为:$url
+				echo -e "\033[33m"更新域名为:$url
 				break
 			fi
-			echo -e "\033[35m"域名未更新，等待30分钟 $date
+			echo -e "\033[33m"域名未更新，等待30分钟
 			loading 30
 		done
 		echo -e "\033[39m"重新开始域名检测 $date
