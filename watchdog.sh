@@ -13,8 +13,6 @@
 #v9.2 增加当前网络归属地的显示
 #v9.3 修改更新域名频率，调整错误日志输出
 
-#读取需监控的域名
-url=`cat ./watchdog/url.list`
 #读取配置文件
 source ./config
 
@@ -58,9 +56,22 @@ function urlEncode() {
 #Pushplus推送
 function sendmsg()
 {
-nowmsg=http://www.pushplus.plus/send?token=$1$2
-nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $nowmsg`
-echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode
+if [ ! $pushplustokena ]
+then
+    echo -e "\033[34m"未设置PUSHPLUS-A，跳过本次推送任务
+else
+    nowmsg=http://www.pushplus.plus/send?token=$pushplustokena$1
+    nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $nowmsg`
+    echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode
+fi
+if [ ! $pushplustokenb ]
+then
+    echo -e "\033[34m"未设置PUSHPLUS-B，跳过本次推送任务
+else
+    nowmsg=http://www.pushplus.plus/send?token=$pushplustokenb$1
+    nowmsgcode=`curl -o /dev/null --retry 3 --retry-max-time 30 -s -w %{http_code} $nowmsg`
+    echo -e "\033[34m"本次PUSHPLUS推送已完成！代码:$nowmsgcode
+fi
 }
 #获取本机ip归属地信息
 function ipp
@@ -73,13 +84,13 @@ uipp="`urlEncode $ipp`"
 #更新检测url
 function updateurl
 {
-if [[ $urlhub != "" ]]
+if [[ ! $urlhub ]]
 then
-	new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
-else
 	rm -rf watchdog
 	git clone --depth 1 $hub watchdog --quiet
 	new_url=`cat ./watchdog/url.list`
+else
+	new_url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
 fi
 }
 
@@ -93,8 +104,11 @@ wrong=''
 tstart=`date '+%s'`
 autograph="%3Cbr+%2F%3E%3Cbr+%2F%3Ehttp%3A%2F%2Fgithub.com%2Frainweb82%2Fwatchdog"
 #如填写了urlhub，则使用此地址的url进行检测
-if [[ $urlhub != "" ]]
+if [[ ! $urlhub ]]
 then
+#读取需监控的域名
+    url=`cat ./watchdog/url.list`
+else
 	url="`curl --retry 3 --retry-max-time 30 -L -s $urlhub`"
 fi
 #推送容错时间计算
@@ -175,18 +189,7 @@ do
 			wrongmsg=%3Cbr+%2F%3E%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%EF%BC%9A${wrong:0:84*20}
 		fi
 		nowmsg=\&title=$surl%E7%9B%91%E6%8E%A7%E6%97%A5%E6%8A%A5\&content=%E7%9B%91%E6%8E%A7%E5%9F%9F%E5%90%8D%EF%BC%9A$surl%3Cbr+%2F%3E%E7%B4%AF%E8%AE%A1%E7%9B%91%E6%8E%A7%EF%BC%9A$(($zcnum+$cwnum))%E6%AC%A1+%E3%80%90%E6%AD%A3%E5%B8%B8%EF%BC%9A$zcnum%E6%AC%A1%EF%BC%8C%E9%94%99%E8%AF%AF%EF%BC%9A$cwnum%E6%AC%A1%E3%80%91%3Cbr+%2F%3E%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4%EF%BC%9A$day%E5%A4%A9$hour%E5%B0%8F%E6%97%B6$min%E5%88%86$sec%E7%A7%92%3Cbr+%2F%3E%E7%BD%91%E7%BB%9C%E5%BD%92%E5%B1%9E%EF%BC%9A$uipp%3Cbr+%2F%3E`date +"%m-%d_%H:%M:%S"`%3Cbr+%2F%3E$wrongmsg$autograph\&template=html
-		if [ ! $pushplustokena ]
-		then
-			echo -e "\033[34m"未设置PUSHPLUS-A，跳过本次每日推送任务
-		else
-			sendmsg $pushplustokena $nowmsg
-		fi
-		if [ ! $pushplustokenb ]
-		then
-			echo -e "\033[34m"未设置PUSHPLUS-B，跳过本次每日推送任务
-		else
-			nsendmsg $pushplustokenb $nowmsg
-		fi
+		sendmsg $nowmsg
 		issend=0
 	fi
 	date=`date +"%m-%d %H:%M:%S"`
@@ -220,18 +223,7 @@ do
 		if [ $(( $times % $msgtimes )) = 0 ] && [ $times -ne 0 ] ; then
 			#推送消息
 			nowmsg=\&title=$surl%E7%BD%91%E7%AB%99%E6%8C%82%E4%BA%86\&content=$surl+%E5%9F%9F%E5%90%8D%E6%8C%82%E4%BA%86%EF%BC%8C%E5%BF%AB%E5%8E%BB%E7%9C%8B%E7%9C%8B%3Cbr+%2F%3E%E7%BD%91%E7%BB%9C%E5%BD%92%E5%B1%9E%EF%BC%9A$uipp%3Cbr+%2F%3E`date +"%m-%d_%H:%M:%S"`$autograph\&template=html
-			if [ ! $pushplustokena ]
-			then
-				echo -e "\033[34m"未设置PUSHPLUS-A，跳过本次错误推送任务
-			else
-				sendmsg $pushplustokena $nowmsg
-			fi
-			if [ ! $pushplustokenb ]
-			then
-				echo -e "\033[34m"未设置PUSHPLUS-B，跳过本次错误推送任务
-			else
-				sendmsg $pushplustokenb $nowmsg
-			fi
+			sendmsg $nowmsg
 			#重置报错计数
 			times=0
 			temptimes=0
