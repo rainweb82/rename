@@ -91,7 +91,7 @@ lxcwhj=0
 issend=0
 wrong=''
 tstart=`date '+%s'`
-autograph="%3Cbr+%2F%3E%3Cbr+%2F%3E%E6%9C%AC%E9%80%9A%E7%9F%A5+By%EF%BC%9Agithub.com%2Frainweb82%2Fwatchdog"
+autograph="%3Cbr+%2F%3E%3Cbr+%2F%3Ehttp%3A%2F%2Fgithub.com%2Frainweb82%2Fwatchdog"
 #如填写了urlhub，则使用此地址的url进行检测
 if [[ $urlhub != "" ]]
 then
@@ -160,7 +160,7 @@ do
 			jjurl $url
 			echo -e "\033[33m"更新域名为:$url
 		else
-			echo -e "\033[33m"域名无变化，继续监控:$url
+			echo -e "\033[33m"域名无更新，继续监控:$url
 		fi
 		#更新运行文件
 		cp ./watchdog/run.sh run.sh
@@ -258,7 +258,7 @@ do
 				echo -e "\033[33m"更新域名为:$url
 				break
 			fi
-			echo -e "\033[33m"域名未更新，等待30分钟
+			echo -e "\033[33m"域名无更新，等待30分钟
 			loading 30
 		done
 		echo -e "\033[39m"重新开始域名检测 $date
