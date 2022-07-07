@@ -23,7 +23,7 @@ pkg install git && pkg install vim -y
 
 #### 首次下载最新脚本
 
-git clone --depth 1 https://gitee.com/iamruirui/watchurl.git watchdog && cp ./watchdog/run.sh run.sh && cp ./watchdog/config config
+git clone --depth 1 https://iamruirui:qweasd123@gitee.com/iamruirui/watchdog.git watchdog && cp ./watchdog/run.sh run.sh && cp ./watchdog/config config
 
 #### 运行程序
 
@@ -41,7 +41,7 @@ url.list内为需监控的域名，程序会更新线上url.list文件，修改�
 | `hub` | 脚本更新地址 |
 | `urlhub` | 检测域名所在地址(不填则使用库中的url.list内地址) |
 | `hub` | PUSHPLUS推送tokena |
-| `pushplustoken(a/b)` | 脚本更新地址 |
+| `pushplustoken` | PUSHPLUS推送token，多个时用空格分割 |
 | `rtit` | 网页正常时源码内包含的内容 |
 | `err` | 首次错误推送容错次数 |
 | `msgtimes` | 连续出错多少次进行推送消息 |
